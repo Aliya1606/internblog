@@ -11,22 +11,22 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('users', function (Blueprint $table) {
-            $table->id();             
-            $table->string('name');
-            $table->string('email')->unique();
-            $table->string('password');
+        Schema::create('blogs', function (Blueprint $table) {
+            $table->id(); // Primary key
+            $table->foreignId('user_id')->constrained('users');
+            $table->string('title'); // Blog title
+            $table->longText('content'); // Blog description
             $table->timestamps();
+            
         });
     }
+    
 
     /**
      * Reverse the migrations.
      */
     public function down(): void
     {
-        Schema::dropIfExists('users');
-        Schema::dropIfExists('password_reset_tokens');
-        Schema::dropIfExists('sessions');
+        Schema::dropIfExists('blogs');
     }
 };
