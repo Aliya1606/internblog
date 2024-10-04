@@ -22,17 +22,19 @@ class BlogController extends Controller
 
     public function store(Request $request)
     {
-        $validatedData = $request->validate([
+        $this->validate($request, [
             'title' => 'required|max:255',
             'content' => 'required',
         ]);
 
-        //auth()->user()->blogs()->create($request->all());
-        $blog = new Blog();
-        $blog->user_id = auth()->user()->id;
-        $blog->title = $validatedData['title'];
-        $blog->content = $validatedData['content'];
-        $blog->save();
+        auth()->user()->blogs()->create($request->all());//mass assignment
+
+        // example without mass assignment
+        // $blog = Blog::create([
+        //     'user_id' => auth()->user()->id,
+        //     'title' => $request->title,
+        //     'content' => $request->content,
+        // ])
 
         return redirect()->route('blogs.index')->with('success', 'Blog post created successfully.');
     }
@@ -51,15 +53,14 @@ class BlogController extends Controller
     public function update(Request $request, Blog $blog)
     {
         {
-            $validatedData = $request->validate([
+            $this->validate($request, [
                 'title' => 'required|max:255',
                 'content' => 'required',
             ]);
     
-            $blog->title = $validatedData['title'];
-            $blog->content = $validatedData['content'];
-            $blog->save();
-    
+            //$blog->title = $validatedData['title'];
+            //$blog->content = $validatedData['content'];
+            $blog->update($request->all());
             return redirect()->route('blogs.index')->with('success', 'Blog post updated successfully.');
         }
     }

@@ -39,10 +39,17 @@
     }
 </style>
 
-<div class="container">
+< class="container">
     <h1>{{ $blog->title }}</h1>
     <p><strong>Published on:</strong> {{ $blog->created_at->format('F j, Y') }}</p>
     <p>{{ $blog->content }}</p>
     <a href="{{ route('blogs.index') }}" class="btn-back">Back to Blogs</a>
+    <a href="{{ route('blogs.edit', $blog->id) }}" class="btn-edit">Edit Post</a> <!-- Edit button -->
+
+    <form action="{{ route('blogs.destroy', $blog->id) }}" method="POST" style="display:inline;">
+        @csrf
+        @method('DELETE')
+        <button type="submit" class="btn-delete" onclick="return confirm('Are you sure you want to delete this blog post?')">Delete Post</button>
+    </form>
 </div>
 @endsection
