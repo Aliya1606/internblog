@@ -1,41 +1,92 @@
 @extends('layouts.app')
 <style>
+    /* General Page Styles */
     body {
         font-family: 'Poppins', sans-serif;
-        background-color: #f4e1d3; /* Light nude background */
+        background-color: #f8f9fa;
         color: #333;
     }
+
     h1 {
-        font-size: 28px;
-        color: #c19a8d; /* Soft nude color */
-        margin-bottom: 20px;
+        font-size: 32px;
+        text-align: center;
+        color: #007bff;
+        margin-bottom: 30px;
+        font-weight: bold;
+    }
+
+    /* Form Styling */
+    form {
+        display: flex;
+        flex-direction: column;
     }
     label {
-        display: block;
-        margin: 10px 0 5px;
+        font-size: 16px;
+        font-weight: bold;
+        color: #333;
+        margin-bottom: 8px;
     }
-    input[type="text"], textarea {
+    input[type="text"],
+    textarea {
         width: 100%;
-        padding: 10px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        margin-bottom: 20px;
+        padding: 15px;
+        border-radius: 6px;
+        border: 1px solid #ddd;
+        background-color: #f9f9f9;
+        font-size: 16px;
+        transition: border-color 0.3s;
     }
+    input[type="text"]:focus,
+    textarea:focus {
+        border-color: #007bff;
+        outline: none;
+        background-color: #fff;
+    }
+    textarea {
+        height: 180px;
+        resize: none;
+    }
+
+    /* Button Styles */
     button {
-        background-color: #d2b19b; /* Soft nude button color */
+        width: 100%;
+        padding: 15px;
+        font-size: 18px;
+        font-weight: bold;
         color: white;
-        padding: 10px 20px;
+        background-color: #007bff;
         border: none;
-        border-radius: 5px;
+        border-radius: 6px;
         cursor: pointer;
+        transition: background-color 0.3s;
+        margin-top: 20px;
     }
     button:hover {
-        background-color: #c19a8d; /* Darker nude on hover */
+        background-color: #0056b3;
+    }
+
+    /* Adding Spacing to Form Items */
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    /* Mobile Responsiveness */
+    @media (max-width: 768px) {
+        .container {
+            padding: 20px;
+            margin: 20px auto;
+        }
+        h1 {
+            font-size: 28px;
+        }
+        button {
+            padding: 12px;
+        }
     }
 </style>
 
 @section('content')
-    <div class="container">
+<div class="container">
         <h1>Create Post</h1>
         <form action="{{ route('blogs.posts.store', ['$blog->id', '$post->id']) }}" method="POST">
             @csrf
@@ -47,9 +98,9 @@
                 <label for="content">Content</label>
                 <textarea name="content" id="content" placeholder="Write your content here..." required></textarea>
             </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+            
         </form>
-        <button type="submit" class="btn btn-primary">Submit</button>
-        <a href="{{ route('blogs.show', [$blog->id, $post->id]) }}" class="btn btn-primary">Back to Post</a>
-
-    </div>
+        <a href="{{ route('blogs.show', ['$blog->id', '$post->id']) }}" class="btn btn-primary">Back to Post</a>
+        </div>
 @endsection
