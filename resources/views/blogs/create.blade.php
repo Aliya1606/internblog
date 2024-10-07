@@ -98,7 +98,8 @@
             <label for="content">Content</label>
             <textarea name="content" id="content" placeholder="Write your content here..." required></textarea>
         </div>
-        <button type="submit">Submit</button>
+        <button type="submit" class="btn btn-primary">Submit</button>
     </form>
+    <a href="{{ route('blogs.index') }}" class="btn btn-primary btn-sm">Back to Blogs</a>
 </div>
 @endsection
