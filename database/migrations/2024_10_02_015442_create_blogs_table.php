@@ -12,16 +12,15 @@ return new class extends Migration
     public function up()
     {
         Schema::create('blogs', function (Blueprint $table) {
-            $table->id(); // Primary key
+            $table->id();
             $table->foreignId('user_id')->constrained('users');
-            $table->string('title'); // Blog title
-            $table->longText('content'); // Blog description
+            $table->string('title');
+            $table->longText('content');
             $table->timestamps();
-            
+            $table->softDeletes();
         });
     }
     
-
     /**
      * Reverse the migrations.
      */

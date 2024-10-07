@@ -35,21 +35,21 @@
 </style>
 
 @section('content')
+    <div class="container">
+        <h1>Create Post</h1>
+        <form action="{{ route('blogs.posts.store', ['$blog->id', '$post->id']) }}" method="POST">
+            @csrf
+            <div class="form-group">
+                <label for="title">Title</label>
+                <input type="text" name="title" id="title" placeholder="Enter blog title" required>
+            </div>
+            <div class="form-group">
+                <label for="content">Content</label>
+                <textarea name="content" id="content" placeholder="Write your content here..." required></textarea>
+            </div>
+        </form>
+        <button type="submit" class="btn btn-primary">Submit</button>
+        <a href="{{ route('blogs.show', [$blog->id, $post->id]) }}" class="btn btn-primary">Back to Post</a>
 
-<div class="container">
-    <h1>Edit Blog Post</h1>
-    <form action="{{ route('blogs.update', $blog->id) }}" method="POST">
-        @csrf
-        @method('PUT') <!-- This is needed for PUT requests -->
-        
-        <label for="title">Title</label>
-        <input type="text" name="title" id="title" value="{{ $blog->title }}" required>
-        
-        <label for="content">Content</label>
-        <textarea name="content" id="content" required>{{ $blog->content }}</textarea>
-        
-        <button type="submit">Update Post</button>
-    </form>
-    <a href="{{ route('blogs.index') }}" class="btn-back">Back to Blogs</a>
-</div>
+    </div>
 @endsection

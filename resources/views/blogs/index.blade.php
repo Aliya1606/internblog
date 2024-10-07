@@ -9,14 +9,13 @@
             <thead>
                 <tr>
                     <th>Title</th>
-                    <th>Description</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach($blogs as $blog)
                     <tr>
-                        <td><a href="{{ route('blogs.show', $blog->id) }}">{{ $blog->title }}</a></td>
-                        <td>{{ $blog->content }}</td>
+                        <td>{{ $blog->title }}</a></td>
+                        <td><a href="{{ route('blogs.show', $blog->id) }}" class="btn btn-primary">Show</a></td>
                     </tr>
                 @endforeach
             </tbody>

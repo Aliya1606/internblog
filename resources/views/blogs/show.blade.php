@@ -1,55 +1,34 @@
 @extends('layouts.app')
 
+
 @section('content')
-<style>
-    body {
-        font-family: 'Poppins', sans-serif;
-        background-color: #f4e1d3; /* Light nude background */
-        color: #333;
-    }
-    .container {
-        max-width: 600px;
-        margin: 50px auto;
-        background-color: #ffffff; /* White background for the card */
-        padding: 40px;
-        border-radius: 10px;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-    }
-    h1 {
-        font-size: 28px;
-        color: #c19a8d; /* Soft nude color */
-        margin-bottom: 20px;
-    }
-    p {
-        font-size: 16px;
-        line-height: 1.5;
-        margin-bottom: 20px;
-    }
-    .btn-back {
-        background-color: #d2b19b; /* Soft nude button color */
-        color: white;
-        padding: 10px 20px;
-        border-radius: 5px;
-        text-decoration: none;
-        display: inline-block;
-        transition: background-color 0.3s;
-    }
-    .btn-back:hover {
-        background-color: #c19a8d; /* Darker nude on hover */
-    }
-</style>
-
-< class="container">
-    <h1>{{ $blog->title }}</h1>
-    <p><strong>Published on:</strong> {{ $blog->created_at->format('F j, Y') }}</p>
+    <h1><strong>{{ $blog->title }}</strong></h1>
+    <p><small>{{ $blog->created_at->format('F j, Y') }}</small></p>
     <p>{{ $blog->content }}</p>
-    <a href="{{ route('blogs.index') }}" class="btn-back">Back to Blogs</a>
-    <a href="{{ route('blogs.edit', $blog->id) }}" class="btn-edit">Edit Post</a> <!-- Edit button -->
-
-    <form action="{{ route('blogs.destroy', $blog->id) }}" method="POST" style="display:inline;">
-        @csrf
-        @method('DELETE')
-        <button type="submit" class="btn-delete" onclick="return confirm('Are you sure you want to delete this blog post?')">Delete Post</button>
-    </form>
+    <a href="{{ route('blogs.posts.create', $blog->id) }}" class="btn btn-primary btn-sm">Create New Post</a>
+    <table class="table">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach($posts as $post)
+                    <tr>
+                        <td>{{ $post->title }}</a></td>
+                        <td><a href="{{ route('blogs.posts.show', [$blog->id, $post->id]) }}" class="btn btn-primary">Show</a></td>
+                        <td><a href="{{ route('blogs.posts.edit', [$blog->id, $post->id]) }}" class="btn btn-primary">Edit</a></td>
+                        <td>
+                            <form action="{{ route('blogs.posts.destroy', [$blog->id, $post->id]) }}" method="POST" style="display:inline;">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-primary" onclick="return confirm('Are you sure you want to delete this post?');">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+    <a href="{{ route('blogs.index') }}" class="btn btn-primary btn-sm">Back to Blogs</a>
 </div>
 @endsection

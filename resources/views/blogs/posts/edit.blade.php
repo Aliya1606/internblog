@@ -35,21 +35,20 @@
 </style>
 
 @section('content')
-
-<div class="container">
-    <h1>Edit Blog Post</h1>
-    <form action="{{ route('blogs.update', $blog->id) }}" method="POST">
-        @csrf
-        @method('PUT') <!-- This is needed for PUT requests -->
-        
-        <label for="title">Title</label>
-        <input type="text" name="title" id="title" value="{{ $blog->title }}" required>
-        
-        <label for="content">Content</label>
-        <textarea name="content" id="content" required>{{ $blog->content }}</textarea>
-        
-        <button type="submit">Update Post</button>
-    </form>
-    <a href="{{ route('blogs.index') }}" class="btn-back">Back to Blogs</a>
-</div>
+    <div class="container">
+        <h1>Edit Post</h1>
+            <form action="{{ route('blogs.posts.update', [$blog->id, $post->id]) }}" method="POST">
+                @csrf
+                @method('PUT')
+                
+                <label for="title">Title</label>
+                <input type="text" name="title" id="title" value="{{ $post->title }}" required>
+                
+                <label for="content">Content</label>
+                <textarea name="content" id="content" required>{{ $post->content }}</textarea>
+                
+                <button type="submit" class="btn btn-primary">Update Post</button>
+                <a href="{{ route('blogs.show', [$blog, $post]) }}" class="btn btn-primary">Back to Post</a>
+            </form>
+    </div>
 @endsection

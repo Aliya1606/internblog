@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Post;
 use App\Models\Blog;
 use App\Models\Tag;
 use Illuminate\Http\Request;
@@ -32,6 +33,7 @@ class BlogController extends Controller
         // example without mass assignment
         // $blog = Blog::create([
         //     'user_id' => auth()->user()->id,
+        
         //     'title' => $request->title,
         //     'content' => $request->content,
         // ])
@@ -41,7 +43,8 @@ class BlogController extends Controller
 
     public function show(Blog $blog)
     {
-        return view('blogs.show', compact('blog'));
+        $posts=Post::all();
+        return view('blogs.show', compact('blog', 'posts'));
     }
 
     public function edit(Blog $blog)
