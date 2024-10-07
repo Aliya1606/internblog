@@ -17,7 +17,8 @@ class PostController extends Controller
 
     public function create(Blog $blog)
     {
-        return view('blogs.posts.create', compact('blog'));
+        $tags = Tag::all();
+        return view('blogs.posts.create', compact('tags','blog')); //dlm compact kne ade blog skali
     }
 
     public function store(Request $request, Blog $blog)

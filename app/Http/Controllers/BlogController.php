@@ -64,7 +64,7 @@ class BlogController extends Controller
             //$blog->title = $validatedData['title'];
             //$blog->content = $validatedData['content'];
             $blog->update($request->all());
-            return redirect()->route('blogs.index')->with('success', 'Blog post updated successfully.');
+            return redirect()->route('blogs.show', '$blog->id')->with('success', 'Blog post updated successfully.');
         }
     }
 
