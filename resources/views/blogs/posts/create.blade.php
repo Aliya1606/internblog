@@ -88,7 +88,7 @@
 @section('content')
 <div class="container">
     <h1>Create Post</h1>
-    <form action="{{ route('blogs.posts.store', ['$blog->id', '$post->id']) }}" method="POST">
+    <form action="{{ route('blogs.posts.store', $blog->id) }}" method="POST"> 
         @csrf
         <div class="form-group">
             <label for="title">Title</label>
@@ -99,7 +99,7 @@
             <textarea name="content" id="content" placeholder="Write your content here..." required></textarea>
         </div>
         <button type="submit" class="btn btn-primary">Submit</button>
-    </form>
-    <a href="{{ route('blogs.show', ['$blog', '$post']) }}" class="btn btn-primary">Back to Post</a>
+        </form>
+    <a href="{{ route('blogs.show', ['$blog->id', '$post->id']) }}" class="btn btn-primary">Back to Post</a>
 </div>
 @endsection
