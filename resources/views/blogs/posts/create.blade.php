@@ -100,6 +100,6 @@
         </div>
         <button type="submit" class="btn btn-primary">Submit</button>
         </form>
-    <a href="{{ route('blogs.show', ['$blog->id', '$post->id']) }}" class="btn btn-primary">Back to Post</a>
+    <a href="{{ route('blogs.show', $blog->id) }}" class="btn btn-primary btn-sm">Back to Post</a>
 </div>
 @endsection
