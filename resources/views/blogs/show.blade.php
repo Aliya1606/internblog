@@ -4,10 +4,12 @@
 @section('content')
 <div class="container">
     <h1><strong>{{ $blog->title }}</strong></h1>
-    <p><small>{{ $blog->created_at->format('F j, Y') }}</small></p>
-    <p>{{ $blog->content }}</p>
-    <a href="{{ route('blogs.posts.create', $blog->id) }}" class="btn btn-primary btn-sm">Create New Post</a>
-    <a class="btn btn-primary btn-sm">Create New Tag</a>
+    <p>
+        <a>{{ $blog->content }}</a>
+        <a style="float: right;"><small>{{ $blog->created_at->format('F j, Y') }}</small></a>
+    </p>
+    <a href="{{ route('blogs.posts.create', $blog->id) }}" class="btn btn-primary btn-sm" style="margin-right: 10px;">Create New Post</a>
+    <a class="btn btn-primary btn-sm" style="margin-right: 10px;">Create New Tag</a>
     <a href="{{ route('blogs.edit', $blog->id) }}" class="btn btn-primary btn-sm">Edit Blog</a>
     <table class="table">
             <thead>
