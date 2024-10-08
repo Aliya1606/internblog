@@ -6,11 +6,11 @@
     <h1><strong>{{ $blog->title }}</strong></h1>
     <p>
         <a>{{ $blog->content }}</a>
-        <a style="float: right;"><small>{{ $blog->created_at->format('F j, Y') }}</small></a>
+        <a style="float: right;"><small>{{ $blog->created_at->format('d M Y, h:i A') }}</small></a>
     </p>
     <a href="{{ route('blogs.posts.create', $blog->id) }}" class="btn btn-primary btn-sm" style="margin-right: 10px;">Create New Post</a>
     <a class="btn btn-primary btn-sm" style="margin-right: 10px;">Create New Tag</a>
-    <a href="{{ route('blogs.edit', $blog->id) }}" class="btn btn-primary btn-sm">Edit Blog</a>
+    <a href="{{ route('blogs.edit', $blog->id) }}" class="btn btn-primary btn-sm" style="float: right;">Edit Blog</a>
     <table class="table">
             <thead>
                 <tr>
@@ -21,6 +21,7 @@
                 @foreach($posts as $post)
                     <tr>
                         <td>{{ $post->title }}</a></td>
+                        <td><small>{{ $post->created_at->format('d M Y, h:i A') }}</small></td>
                         <td><a href="{{ route('blogs.posts.show', [$blog->id, $post->id]) }}" class="btn btn-primary">Show</a></td>
                         <td><a href="{{ route('blogs.posts.edit', [$blog->id, $post->id]) }}" class="btn btn-primary">Edit</a></td>
                         <td>
@@ -34,7 +35,7 @@
                 @endforeach
             </tbody>
         </table>
-    <a href="{{ route('blogs.index') }}" class="btn btn-primary btn-sm">Back to Blogs</a>
+    <a href="{{ route('blogs.index') }}" class="btn btn-primary btn-sm" style="float: right;">Back to Blogs</a>
 </div>
 </div>
 @endsection

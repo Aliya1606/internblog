@@ -15,6 +15,7 @@
                 @foreach($blogs as $blog)
                     <tr>
                         <td>{{ $blog->title }}</a></td>
+                        <td><small>{{ $blog->created_at->format('d M Y, h:i A') }}</small></td>
                         <td><a href="{{ route('blogs.show', $blog->id) }}" class="btn btn-primary">Show</a></td>
                     </tr>
                 @endforeach

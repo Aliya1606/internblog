@@ -30,6 +30,8 @@ class TagController extends Controller
 
         auth()->user()->tags()->create($request->all());
 
+
+        
         // Tag::create([
         //     'user_id' => auth()->user()->id,
         //     'blog_id' => $blog->id,

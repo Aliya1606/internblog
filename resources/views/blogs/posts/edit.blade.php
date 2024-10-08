@@ -111,6 +111,6 @@
                 
                 <button type="submit" class="btn btn-primary">Update Post</button>
             </form>
-            <a href="{{ route('blogs.show', [$blog, $post]) }}" class="btn btn-primary btn-sm">Back to Post</a>
+            <a href="{{ route('blogs.show', [$blog, $post]) }}" class="btn btn-primary btn-sm" style="float: right;">Back to Post</a>
     </div>
 @endsection

@@ -3,7 +3,10 @@
 @section('content')
 <div class="container">
     <h2><strong>{{ $post->title }}</strong></h2>
-    <p>{{ $post->content }}</p>
+    <p>
+        <a style="float: right;"><small>{{ $blog->created_at->format('d M Y, h:i A') }}</small></a>
+    </p>
+    <a>{{ $blog->content }}</a>
     <p>Tags:</p>
     <p>
     <ul>
@@ -13,6 +16,6 @@
     </ul>
     </p>
     <a href="{{ route('blogs.posts.edit', [$blog->id, $post->id]) }}" class="btn btn-primary btn-sm" style="margin-right: 10px;">Edit</a>
-    <a href="{{ route('blogs.show', [$blog->id, $post->id]) }}" class="btn btn-primary btn-sm">Back to Post</a>
+    <a href="{{ route('blogs.show', [$blog->id, $post->id]) }}" class="btn btn-primary btn-sm" style="float: right;">Back to Post</a>
 </div>
 @endsection
