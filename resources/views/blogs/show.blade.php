@@ -2,10 +2,13 @@
 
 
 @section('content')
+<div class="container">
     <h1><strong>{{ $blog->title }}</strong></h1>
     <p><small>{{ $blog->created_at->format('F j, Y') }}</small></p>
     <p>{{ $blog->content }}</p>
     <a href="{{ route('blogs.posts.create', $blog->id) }}" class="btn btn-primary btn-sm">Create New Post</a>
+    <a class="btn btn-primary btn-sm">Create New Tag</a>
+    <a href="{{ route('blogs.edit', $blog->id) }}" class="btn btn-primary btn-sm">Edit Blog</a>
     <table class="table">
             <thead>
                 <tr>
@@ -30,5 +33,6 @@
             </tbody>
         </table>
     <a href="{{ route('blogs.index') }}" class="btn btn-primary btn-sm">Back to Blogs</a>
+</div>
 </div>
 @endsection

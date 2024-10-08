@@ -87,30 +87,31 @@
 
 @section('content')
     <div class="container">
-        <h1>Edit Post</h1>
-            <form action="{{ route('blogs.posts.update', [$blog->id, $post->id]) }}" method="POST">
-                @csrf
-                @method('PUT')
-                
-                <label for="title">Title</label>
-                <input type="text" name="title" id="title" value="{{ $post->title }}" required>
-                
-                <label for="content">Content</label>
-                <textarea name="content" id="content" required>{{ $post->content }}</textarea>
+        <h1>Tags</h1>
+        <a href="{{ route('blogs.posts.tags.create') }}" class="btn btn-primary btn-sm">Create New Tag</a>
 
-                <div class="form-group">
-                    <label for="tags">Tags:</label>
-                    <select name="tag_ids[]" id="tags" multiple class="form-control">
-                        @foreach($tags as $tag)
-                            <option value="{{ $tag->id }}">
-                                {{ $tag->name }}
-                            </option>
-                        @endforeach
-                    </select>
-                </div>
-                
-                <button type="submit" class="btn btn-primary">Update Post</button>
-            </form>
-            <a href="{{ route('blogs.show', [$blog, $post]) }}" class="btn btn-primary btn-sm">Back to Post</a>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach($tags as $tag)
+                    <tr>
+                        <td>{{ $tag->name }}</td>
+                        <td>
+                            <a href="{{ route('blogs.posts.tags.edit', $tag->id) }}" class="btn btn-sm btn-warning">Edit</a>
+                            <form action="{{ route('blogs.posts.tags.destroy', $tag->id) }}" method="POST" style="display:inline;">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure you want to delete this tag?');">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
     </div>
 @endsection

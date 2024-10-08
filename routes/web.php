@@ -33,4 +33,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('blogs/{blog}/posts/{post}/edit', [PostController::class, 'edit'])->name('blogs.posts.edit');
     Route::put('blogs/{blog}/posts/{post}', [PostController::class, 'update'])->name('blogs.posts.update');
     Route::delete('blogs/{blog}/posts/{post}', [PostController::class, 'destroy'])->name('blogs.posts.destroy');
+
+    //tag
+    Route::put('blogs/{blog}/posts/{post}/tags', [PostController::class, 'updateTags'])->name('posts.tags.update');
+
 });

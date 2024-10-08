@@ -12,13 +12,13 @@ class BlogController extends Controller
     public function index()
     {
         $blogs = Blog::all();
+        $blogs = Blog::orderBy('created_at', 'desc')->get();
         return view('blogs.index', compact('blogs'));
     }
 
     public function create()
     {
-        $tags = Tag::all();
-        return view('blogs.create', compact('tags'));
+        return view('blogs.create');
     }
 
     public function store(Request $request)

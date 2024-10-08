@@ -87,30 +87,16 @@
 
 @section('content')
     <div class="container">
-        <h1>Edit Post</h1>
-            <form action="{{ route('blogs.posts.update', [$blog->id, $post->id]) }}" method="POST">
-                @csrf
-                @method('PUT')
-                
-                <label for="title">Title</label>
-                <input type="text" name="title" id="title" value="{{ $post->title }}" required>
-                
-                <label for="content">Content</label>
-                <textarea name="content" id="content" required>{{ $post->content }}</textarea>
+        <h1>Edit Tag</h1>
 
-                <div class="form-group">
-                    <label for="tags">Tags:</label>
-                    <select name="tag_ids[]" id="tags" multiple class="form-control">
-                        @foreach($tags as $tag)
-                            <option value="{{ $tag->id }}">
-                                {{ $tag->name }}
-                            </option>
-                        @endforeach
-                    </select>
-                </div>
-                
-                <button type="submit" class="btn btn-primary">Update Post</button>
-            </form>
-            <a href="{{ route('blogs.show', [$blog, $post]) }}" class="btn btn-primary btn-sm">Back to Post</a>
+        <form action="{{ route('blogs.posts.tags.update', $tag->id) }}" method="POST">
+            @csrf
+            @method('PUT')
+            <div class="form-group">
+                <label for="name">Tag Name</label>
+                <input type="text" name="name" id="name" class="form-control" value="{{ $tag->name }}" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Update</button>
+        </form>
     </div>
 @endsection

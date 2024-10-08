@@ -12,13 +12,14 @@ class PostController extends Controller
     public function index(Blog $blog)
     {
         $posts = $blog->posts;
+        $posts = Post::orderBy('created_at', 'desc')->get();
         return view('blogs.posts.index', compact('posts'));
     }
 
     public function create(Blog $blog)
     {
         $tags = Tag::all();
-        return view('blogs.posts.create', compact('tags','blog')); //dlm compact kne ade blog skali
+        return view('blogs.posts.create', compact('blog','tags')); //dlm compact kne ade blog skali
     }
 
     public function store(Request $request, Blog $blog)
@@ -30,6 +31,7 @@ class PostController extends Controller
             'content' => $request->content,
         ]);
 
+        $post->tags()->sync($request->tag_ids);
         return redirect()->route('blogs.show', $blog->id)->with('success', 'Post created successfully.');
     }
 
@@ -40,10 +42,11 @@ class PostController extends Controller
 
     public function edit(Blog $blog, Post $post)
     {
-        return view('blogs.posts.edit', compact('blog','post'));
+        $tags = Tag::all();
+        return view('blogs.posts.edit', compact('blog','post', 'tags'));
     }
 
-    public function update(Request $request,Blog $blog,Post $post)
+    public function update(Request $request, Blog $blog, Post $post)
     {
         //$post=Post::find($post);
         //dd($post);
@@ -60,5 +63,17 @@ class PostController extends Controller
     {
         $post->delete(); 
         return redirect()->route('blogs.show', $blog->id)->with('success', 'Post deleted successfully!');
+    }
+
+    public function updateTags(Request $request, Post $post)
+    {
+        $request->validate([
+            'tag_ids' => 'required|array',
+            'tag_ids.*' => 'exists:tags,id',
+        ]);
+
+        $post->tags()->sync($request->input('tag_ids'));
+
+        return redirect()->route('blogs.posts.show', $post->id)->with('success', 'Tags updated successfully.');
     }
 }
