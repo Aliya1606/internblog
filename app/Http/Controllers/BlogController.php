@@ -5,14 +5,16 @@ namespace App\Http\Controllers;
 use App\Models\Post;
 use App\Models\Blog;
 use App\Models\Tag;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class BlogController extends Controller
 {
-    public function index()
+    public function index(User $user)
     {
-        $blogs = Blog::all();
-        $blogs = Blog::orderBy('created_at', 'desc')->get();
+        // $blogs = Blog::all();
+        $blogs = auth()->user()->blogs()->orderBy('created_at', 'desc')->get();
+        //$blogs = Blog::orderBy('created_at', 'desc')->get();
         return view('blogs.index', compact('blogs'));
     }
 

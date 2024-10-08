@@ -9,7 +9,6 @@
         <a style="float: right;"><small>{{ $blog->created_at->format('d M Y, h:i A') }}</small></a>
     </p>
     <a href="{{ route('blogs.posts.create', $blog->id) }}" class="btn btn-primary btn-sm" style="margin-right: 10px;">Create New Post</a>
-    <a class="btn btn-primary btn-sm" style="margin-right: 10px;">Create New Tag</a>
     <a href="{{ route('blogs.edit', $blog->id) }}" class="btn btn-primary btn-sm" style="float: right;">Edit Blog</a>
     <table class="table">
             <thead>
