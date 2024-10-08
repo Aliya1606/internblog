@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\TagController;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\PostController;
 use Illuminate\Support\Facades\Auth;
@@ -35,6 +36,12 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('blogs/{blog}/posts/{post}', [PostController::class, 'destroy'])->name('blogs.posts.destroy');
 
     //tag
-    Route::put('blogs/{blog}/posts/{post}/tags', [PostController::class, 'updateTags'])->name('posts.tags.update');
+    Route::get('blogs/{blog}/posts/{post}/tags', [TagController::class, 'index'])->name('blogs.posts.tags.index');
+    Route::get('blogs/{blog}/posts/{post}/tags/create', [TagController::class, 'create'])->name('blogs.posts.tags.create');
+    Route::post('blogs/{blog}/posts/{post}/tags', [TagController::class, 'store'])->name('blogs.posts.tags.store');
+    Route::get('blogs/{blog}/posts/{post}/tags/{tag}', [TagController::class, 'show'])->name('blogs.posts.tags.show');
+    Route::get('blogs/{blog}/posts/{post}/tags/{tag}/edit', [TagController::class, 'edit'])->name('blogs.posts.tags.edit');
+    Route::put('blogs/{blog}/posts/{post}/tags/{tag}', [TagController::class, 'update'])->name('blogs.posts.tags.update');
+    Route::delete('blogs/{blog}/posts/{post}/tags/{tag}', [TagController::class, 'destroy'])->name('blogs.posts.tags.destroy');
 
 });

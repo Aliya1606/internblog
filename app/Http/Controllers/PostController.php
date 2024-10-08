@@ -62,7 +62,7 @@ class PostController extends Controller
         if ($request->has('tag_ids')) {
             $post->tags()->sync($request->tag_ids);
         }
-        return redirect()->route('blogs.show', [$blog->id, $post->blog_id])->with('success', 'Post updated successfully.');        
+        return redirect()->route('blogs.posts.show', [$blog->id, $post->blog_id])->with('success', 'Post updated successfully.');        
     }
 
     public function destroy(Blog $blog, Post $post)

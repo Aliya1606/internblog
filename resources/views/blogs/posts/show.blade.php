@@ -10,6 +10,7 @@
             <li>{{ $tag->name }}</li>
         @endforeach
     </ul>
+    <a href="{{ route('blogs.posts.edit', [$blog->id, $post->id]) }}" class="btn btn-primary">Edit</a>
     <a href="{{ route('blogs.show', [$blog->id, $post->id]) }}" class="btn btn-primary">Back to Post</a>
 </div>
 @endsection
