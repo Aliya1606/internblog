@@ -24,6 +24,14 @@ class PostController extends Controller
 
     public function store(Request $request, Blog $blog)
     {
+
+        $request->validate([
+            'title' => 'required',
+            'content' => 'required',
+            'tag_ids' => 'nullable|array',
+            'tag_ids.*' => 'exists:tags,id',
+        ]);
+
         $post = Post::create([ 
             'user_id' => auth()->user()->id,
             'blog_id' => $blog->id,
@@ -31,8 +39,12 @@ class PostController extends Controller
             'content' => $request->content,
         ]);
 
+        $post->user_id = auth()->user()->id;
         $post->tags()->sync($request->tag_ids);
-        return redirect()->route('blogs.show', $blog->id)->with('success', 'Post created successfully.');
+        // $post->blog_id = $request->blog_id;
+        // $post->save();
+
+        return redirect()->route('blogs.posts.show', [$blog->id,$post->id])->with('success', 'Post created successfully.');
     }
 
     public function show(Blog $blog, Post $post)

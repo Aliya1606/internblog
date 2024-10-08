@@ -44,6 +44,7 @@ class BlogController extends Controller
     public function show(Blog $blog)
     {
         $posts=Post::all();
+        $posts = $blog->posts()->latest()->get();
         return view('blogs.show', compact('blog', 'posts'));
     }
 
