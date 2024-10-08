@@ -37,6 +37,7 @@ class PostController extends Controller
 
     public function show(Blog $blog, Post $post)
     {
+        $post->load('tags');
         return view('blogs.posts.show', compact('blog','post'));
     }
 
@@ -53,9 +54,14 @@ class PostController extends Controller
         $this->validate($request, [
             'title' => 'required|max:255',
             'content' => 'required',
+            'tag_ids' => 'array',
         ]);
 
         $post->update($request->all());
+
+        if ($request->has('tag_ids')) {
+            $post->tags()->sync($request->tag_ids);
+        }
         return redirect()->route('blogs.show', [$blog->id, $post->blog_id])->with('success', 'Post updated successfully.');        
     }
 
@@ -63,17 +69,5 @@ class PostController extends Controller
     {
         $post->delete(); 
         return redirect()->route('blogs.show', $blog->id)->with('success', 'Post deleted successfully!');
-    }
-
-    public function updateTags(Request $request, Post $post)
-    {
-        $request->validate([
-            'tag_ids' => 'required|array',
-            'tag_ids.*' => 'exists:tags,id',
-        ]);
-
-        $post->tags()->sync($request->input('tag_ids'));
-
-        return redirect()->route('blogs.posts.show', $post->id)->with('success', 'Tags updated successfully.');
     }
 }
