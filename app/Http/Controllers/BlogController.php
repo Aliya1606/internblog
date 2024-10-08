@@ -13,8 +13,8 @@ class BlogController extends Controller
     public function index(User $user)
     {
         // $blogs = Blog::all();
-        $blogs = auth()->user()->blogs()->orderBy('created_at', 'desc')->get();
-        //$blogs = Blog::orderBy('created_at', 'desc')->get();
+        // $blogs = auth()->user()->blogs()->orderBy('created_at', 'desc')->get();
+        $blogs = Blog::orderBy('created_at', 'desc')->get();
         return view('blogs.index', compact('blogs'));
     }
 
