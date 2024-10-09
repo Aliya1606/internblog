@@ -5,9 +5,10 @@
 <div class="container">
     <h1><strong>{{ $blog->title }}</strong></h1>
     <p>
-        <a>{{ $blog->content }}</a>
+        <a>Created By: {{ $blog->user->name }}</a>
         <a style="float: right;"><small>{{ $blog->created_at->format('d M Y, h:i A') }}</small></a>
     </p>
+    <p><a>{{ $blog->content }}</a></p>
     <a href="{{ route('blogs.posts.create', $blog->id) }}" class="btn btn-primary btn-sm" style="margin-right: 10px;">Create New Post</a>
     @if (auth()->check() && auth()->user()->id === $blog->user_id)
     <a href="{{ route('blogs.edit', $blog->id) }}" class="btn btn-primary btn-sm" style="float: right;">Edit Blog</a>
@@ -16,12 +17,15 @@
             <thead>
                 <tr>
                     <th>Title</th>
+                    <th>Created By</th>
+                    <th>Created At</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach($posts as $post)
                     <tr>
                         <td>{{ $post->title }}</a></td>
+                        <td>{{ $post->user->name }}</td>
                         <td><small>{{ $post->created_at->format('d M Y, h:i A') }}</small></td>
                         <td><a href="{{ route('blogs.posts.show', [$blog->id, $post->id]) }}" class="btn btn-primary">Show</a></td>
                         @if (auth()->check() && auth()->user()->id === $blog->user_id)
