@@ -43,5 +43,4 @@ Route::middleware(['auth'])->group(function () {
     Route::get('blogs/{blog}/posts/{post}/tags/{tag}/edit', [TagController::class, 'edit'])->name('blogs.posts.tags.edit');
     Route::put('blogs/{blog}/posts/{post}/tags/{tag}', [TagController::class, 'update'])->name('blogs.posts.tags.update');
     Route::delete('blogs/{blog}/posts/{post}/tags/{tag}', [TagController::class, 'destroy'])->name('blogs.posts.tags.destroy');
-
 });

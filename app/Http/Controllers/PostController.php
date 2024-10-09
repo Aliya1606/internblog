@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
 use App\Models\Blog;
 use App\Models\Post;
 use App\Models\Tag;
@@ -37,12 +39,22 @@ class PostController extends Controller
             'blog_id' => $blog->id,
             'title'  => $request->title,
             'content' => $request->content,
+            'attachment' => $request->attachment,
         ]);
 
         $post->user_id = auth()->user()->id;
         $post->tags()->sync($request->tag_ids);
         // $post->blog_id = $request->blog_id;
         // $post->save();
+
+        if ($request->hasFile('attachment')) 
+        {
+            $filename = $post->id. '-'.date('Y-m-d').'-'.$request->attachment->getClientOriginalExtension();
+            Storage::disk('public')->put('attachment/'.$filename, File::get($request->attachment));
+
+            $post->attachment = $filename;
+            $post->save();
+        }
 
         return redirect()->route('blogs.posts.show', [$blog->id,$post->id])->with('success', 'Post created successfully.');
     }
@@ -77,9 +89,18 @@ class PostController extends Controller
         return redirect()->route('blogs.posts.show', [$blog->id, $post->blog_id])->with('success', 'Post updated successfully.');        
     }
 
-    public function destroy(Blog $blog, Post $post)
+    public function destroy(Request $request, Blog $blog, Post $post)
     {
+        if ($request->attachment)
+        {
+            Storage::disk('public')->delete($post->attachment);
+        }
         $post->delete(); 
         return redirect()->route('blogs.show', $blog->id)->with('success', 'Post deleted successfully!');
+    }
+
+    public function getAttachmentUrlAttribute()
+    {
+        return asset('storage/attachment/'.$this->attachment);
     }
 }

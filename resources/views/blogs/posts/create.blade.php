@@ -88,7 +88,7 @@
 @section('content')
 <div class="container">
     <h1>Create Post</h1>
-    <form action="{{ route('blogs.posts.store', $blog->id) }}" method="POST"> 
+    <form action="{{ route('blogs.posts.store', $blog->id) }}" method="POST" enctype="multipart/form-data"> 
         @csrf
         <div class="form-group">
             <label for="title">Title</label>
@@ -107,6 +107,10 @@
                     </option>
                 @endforeach
             </select>
+        </div>
+        <div>
+            <label>Attachment</label>
+            <input type="file" class="form-control" name="attachment">
         </div>
         <button type="submit" class="btn btn-primary">Submit</button>
         </form>

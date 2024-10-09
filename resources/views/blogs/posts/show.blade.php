@@ -16,9 +16,10 @@
         @endforeach
     </ul>
     </p>
-    @if (auth()->check() && auth()->user()->id === $blog->user_id)
-        <a href="{{ route('blogs.posts.edit', [$blog->id, $post->id]) }}" class="btn btn-primary btn-sm" style="margin-right: 10px;">Edit</a>
+    @if ($post->attachment)
+        <a target-="_blank" href="{{ $post->attachment_url }}" class="btn btn-primary btn-sm">Open Attachment</a>
     @endif
     <a href="{{ route('blogs.show', [$blog->id, $post->id]) }}" class="btn btn-primary btn-sm" style="float: right;">Back to Post</a>
+    <a href="{{ route('blogs.posts.edit', [$blog->id, $post->id]) }}" class="btn btn-primary btn-sm" style="float: right;">Edit</a>
 </div>
 @endsection
