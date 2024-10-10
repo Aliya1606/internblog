@@ -97,7 +97,6 @@
                 
                 <label for="content">Content</label>
                 <textarea name="content" id="content" required>{{ $post->content }}</textarea>
-
                 <div class="form-group">
                     <label for="tags">Tags:</label>
                     <select name="tag_ids[]" id="tags" multiple class="form-control">
@@ -108,7 +107,12 @@
                         @endforeach
                     </select>
                 </div>
-                
+
+                <div>
+                    <label>Attachment</label>
+                    <input type="file" class="form-control" name="attachment">
+                </div>
+
                 <button type="submit" class="btn btn-primary">Update Post</button>
             </form>
             <a href="{{ route('blogs.posts.show', [$blog, $post]) }}" class="btn btn-primary btn-sm" style="float: right;">Back to Post</a>

@@ -49,7 +49,7 @@ class PostController extends Controller
 
         if ($request->hasFile('attachment')) 
         {
-            $filename = $post->id. '-'.date('Y-m-d').'-'.$request->attachment->getClientOriginalExtension();
+            $filename = $post->id. '-'.date('Y-m-d').'.'.$request->attachment->getClientOriginalExtension();
             Storage::disk('public')->put('attachment/'.$filename, File::get($request->attachment));
 
             $post->attachment = $filename;
