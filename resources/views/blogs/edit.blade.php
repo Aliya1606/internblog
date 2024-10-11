@@ -91,7 +91,7 @@
     <h1>Edit Blog</h1>
     <form action="{{ route('blogs.update', $blog->id) }}" method="POST">
         @csrf
-        @method('PUT') <!-- This is needed for PUT requests -->
+        @method('PUT')
         
         <label for="title">Title</label>
         <input type="text" name="title" id="title" value="{{ $blog->title }}" required>
