@@ -1,6 +1,5 @@
 @extends('layouts.app')
 
-
 @section('content')
 <div class="container">
     <h1><strong>{{ $blog->title }}</strong></h1>
@@ -42,7 +41,12 @@
                 @endforeach
             </tbody>
         </table>
+
+        <!-- pagination -->
+        <div class="pagination">
+            {{ $posts->links() }}
+        </div>
+
     <a href="{{ route('blogs.index') }}" class="btn btn-primary btn-sm" style="float: right;">Back to Blogs</a>
-</div>
 </div>
 @endsection
