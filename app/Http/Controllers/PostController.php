@@ -32,6 +32,7 @@ class PostController extends Controller
             'content' => 'required',
             'tag_ids' => 'nullable|array',
             'tag_ids.*' => 'exists:tags,id',
+            'attachment' => 'nullable|file',
         ]);
 
         $post = Post::create([ 
@@ -42,11 +43,6 @@ class PostController extends Controller
             'attachment' => $request->attachment,
         ]);
 
-        $post->user_id = auth()->user()->id;
-        $post->tags()->sync($request->tag_ids);
-        // $post->blog_id = $request->blog_id;
-        // $post->save();
-
         if ($request->hasFile('attachment')) 
         {
             $filename = $post->id. '-'.date('Y-m-d').'.'.$request->attachment->getClientOriginalExtension();
@@ -55,6 +51,9 @@ class PostController extends Controller
             $post->attachment = $filename;
             $post->save();
         }
+        
+        $post->user_id = auth()->user()->id;
+        $post->tags()->sync($request->tag_ids);
 
         return redirect()->route('blogs.posts.show', [$blog->id,$post->id])->with('success', 'Post created successfully.');
     }
@@ -73,65 +72,50 @@ class PostController extends Controller
 
     public function update(Request $request, Blog $blog, Post $post)
     {
-        // dd($request->all());
+        //$post=Post::find($post);
+        // dd($post);
+        $this->validate($request, [
+            'title' => 'required',
+            'content' => 'required',
+            'tag_ids' => 'array',
+            'attachment' => 'nullable|file',
+        ]);
 
-        // $this->validate($request, [
-        //     'title' => 'required|max:255',
-        //     'content' => 'required',
-        //     'tag_ids' => 'array',
-        //     'attachment' => 'nullable|file',
-        // ]);
-
-        // Handle tags
+        //Handle tag
         if ($request->has('tag_ids')) {
             $post->tags()->sync($request->tag_ids);
         }
 
         // Check if a new file is uploaded
-        // if ($request->hasFile('attachment')) {
-        //     // Remove the old file if it exists
-        //     if ($post->attachment) {
-        //         Storage::disk('public')->delete('attachment/'.$post->attachment);
-        //     }
-
-        //     $filename = $post->id. '-'.date('Y-m-d').'.'.$request->attachment->getClientOriginalExtension();
-        //     Storage::disk('public')->put('attachment/'.$filename, File::get($request->attachment));
-
-        //     $post->attachment = $filename;
-        //     $post->save();
-        // }
-
         if ($request->hasFile('attachment')) 
         {
+            // Optionally delete the old file if it exists
+            if ($post->attachment) {
+                Storage::disk('public')->delete('attachment/' . $post->attachment);
+            }
+
             $filename = $post->id. '-'.date('Y-m-d').'.'.$request->attachment->getClientOriginalExtension();
             Storage::disk('public')->put('attachment/'.$filename, File::get($request->attachment));
 
+            // Update the post with the new attachment
             $post->attachment = $filename;
-            $post->save();
         }
-        
-        $post->update($request->all());
+
+        $post->update($request->except('attachment'));
 
         return redirect()->route('blogs.posts.show', [$blog->id, $post->id])->with('success', 'Post updated successfully.');        
     }
 
     public function destroy(Request $request, Blog $blog, Post $post)
-    {
-        if ($post->attachment)
+    {   
+        if ($request->attachment)
         {
-        // Find the attachment by its ID
-        $attachment = Post::findOrFail($id);
-
-        // Delete the file from storage
-        if (Storage::exists($attachment->file_path)) {
-            Storage::delete($attachment->file_path);
+            Storage::disk('public')->delete($post->attachment);
         }
 
-        // Delete the attachment record from the database
-        $attachment->delete();        }
         $post->delete(); 
         return redirect()->route('blogs.show', $blog->id)->with('success', 'Post deleted successfully!');
-        }
+    }
 
     public function getAttachmentUrlAttribute()
     {
