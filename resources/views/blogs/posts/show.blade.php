@@ -2,7 +2,8 @@
 
 @section('content')
 <div class="container">
-    <h2><strong>{{ $post->title }}</strong></h2>
+    @include('flash')
+    <h2><strong><i class="fa-regular fa-file-lines"></i>&nbsp;{{ $post->title }}</strong></h2>
     <p>
         <a style="float: right;"><small>{{ $post->created_at->format('d M Y, h:i A') }}</small></a>
         <td>Create By: {{ $post->user->name }}</td>
