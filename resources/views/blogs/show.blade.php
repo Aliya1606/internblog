@@ -8,11 +8,24 @@
         <a style="float: right;"><small>{{ $blog->created_at->format('d M Y, h:i A') }}</small></a>
     </p>
     <p><a>{{ $blog->content }}</a></p>
-    <a href="{{ route('blogs.posts.create', $blog->id) }}" class="btn btn-primary btn-sm" style="margin-right: 10px;">Create New Post</a>
+
+    <!-- Searching -->
+    <div class="mt-5">
+        <form action="{{ route('blogs.show', $blog->id) }}" method="GET">
+            <div class="input-group">
+                <input type="text" class="form-control" name="keyword" value="{{ request()->get('keyword')}}" placeholder="Search posts...">
+                <div class="input-group-append">
+                    <button class="btn btn-primary" type="submit">Search</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <a href="{{ route('blogs.posts.create', $blog->id) }}" class="btn btn-primary btn-sm mt-5">Create New Post</a>
     @if (auth()->check() && auth()->user()->id === $blog->user_id)
-    <a href="{{ route('blogs.edit', $blog->id) }}" class="btn btn-primary btn-sm" style="float: right;">Edit Blog</a>
+    <a href="{{ route('blogs.edit', $blog->id) }}" class="btn btn-primary btn-sm mt-5" style="float: right;">Edit Blog</a>
     @endif
-    <table class="table">
+    <table class="table mt-3">
             <thead>
                 <tr>
                     <th>Title</th>
@@ -44,7 +57,7 @@
 
         <!-- pagination -->
         <div class="pagination">
-            {{ $posts->links() }}
+            {{ $posts->appends(['keyword' => request()->get('keyword')])->links() }}
         </div>
 
     <a href="{{ route('blogs.index') }}" class="btn btn-primary btn-sm" style="float: right;">Back to Blogs</a>

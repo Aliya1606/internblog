@@ -58,10 +58,20 @@ class BlogController extends Controller
         return redirect()->route('blogs.index')->with('success', 'Blog post created successfully.');
     }
 
-    public function show(Blog $blog)
+    public function show(Request $request, Blog $blog)
     {
-        $posts=Post::all();
-        $posts = $blog->posts()->latest()->paginate(5);
+        // $posts=Post::all();
+        // $posts = $blog->posts()->latest()->paginate(5);
+
+        if ($request->keyword)
+        {
+            $posts = Post::where('title', 'LIKE', '%'.$request->keyword.'%')->paginate(3);
+        }
+        else
+        {
+            $posts = $blog->posts()->latest()->paginate(5);
+        }
+
         return view('blogs.show', compact('blog', 'posts'));
     }
 

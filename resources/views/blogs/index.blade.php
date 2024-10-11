@@ -39,7 +39,7 @@
 
         <!-- pagination -->
         <div class="pagination">
-            {{ $blogs->links() }}
+            {{ $blogs->appends(['keyword' => request()->get('keyword')])->links() }}
         </div>
     </div>
 @endsection

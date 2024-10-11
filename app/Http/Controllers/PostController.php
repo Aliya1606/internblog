@@ -11,10 +11,9 @@ use Illuminate\Http\Request;
 
 class PostController extends Controller
 {
-    public function index(Blog $blog)
+    public function index(Request $request, Blog $blog)
     {
-        $posts = $blog->posts;
-        $posts = Post::orderBy('created_at', 'desc')->get();
+        $posts = $blog->posts()->orderBy('created_at', 'desc');
         return view('blogs.posts.index', compact('posts'));
     }
 
