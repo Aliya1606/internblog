@@ -99,7 +99,7 @@
         <label for="content">Content</label>
         <textarea name="content" id="content" required>{{ $blog->content }}</textarea>
         
-        <button type="submit" class="btn btn-primary">Update Post</button>
+        <button type="submit" class="btn btn-primary">Update Blog</button>
     </form>
     <a href="{{ route('blogs.show', $blog->id) }}" class="btn btn-primary btn-sm">Back to Blogs</a>
 </div>

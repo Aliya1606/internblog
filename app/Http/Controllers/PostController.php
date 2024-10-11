@@ -73,31 +73,65 @@ class PostController extends Controller
 
     public function update(Request $request, Blog $blog, Post $post)
     {
-        //$post=Post::find($post);
-        //dd($post);
-        $this->validate($request, [
-            'title' => 'required|max:255',
-            'content' => 'required',
-            'tag_ids' => 'array',
-        ]);
+        // dd($request->all());
 
-        $post->update($request->all());
+        // $this->validate($request, [
+        //     'title' => 'required|max:255',
+        //     'content' => 'required',
+        //     'tag_ids' => 'array',
+        //     'attachment' => 'nullable|file',
+        // ]);
 
+        // Handle tags
         if ($request->has('tag_ids')) {
             $post->tags()->sync($request->tag_ids);
         }
-        return redirect()->route('blogs.posts.show', [$blog->id, $post->blog_id])->with('success', 'Post updated successfully.');        
+
+        // Check if a new file is uploaded
+        // if ($request->hasFile('attachment')) {
+        //     // Remove the old file if it exists
+        //     if ($post->attachment) {
+        //         Storage::disk('public')->delete('attachment/'.$post->attachment);
+        //     }
+
+        //     $filename = $post->id. '-'.date('Y-m-d').'.'.$request->attachment->getClientOriginalExtension();
+        //     Storage::disk('public')->put('attachment/'.$filename, File::get($request->attachment));
+
+        //     $post->attachment = $filename;
+        //     $post->save();
+        // }
+
+        if ($request->hasFile('attachment')) 
+        {
+            $filename = $post->id. '-'.date('Y-m-d').'.'.$request->attachment->getClientOriginalExtension();
+            Storage::disk('public')->put('attachment/'.$filename, File::get($request->attachment));
+
+            $post->attachment = $filename;
+            $post->save();
+        }
+        
+        $post->update($request->all());
+
+        return redirect()->route('blogs.posts.show', [$blog->id, $post->id])->with('success', 'Post updated successfully.');        
     }
 
     public function destroy(Request $request, Blog $blog, Post $post)
     {
-        if ($request->attachment)
+        if ($post->attachment)
         {
-            Storage::disk('public')->delete($post->attachment);
+        // Find the attachment by its ID
+        $attachment = Post::findOrFail($id);
+
+        // Delete the file from storage
+        if (Storage::exists($attachment->file_path)) {
+            Storage::delete($attachment->file_path);
         }
+
+        // Delete the attachment record from the database
+        $attachment->delete();        }
         $post->delete(); 
         return redirect()->route('blogs.show', $blog->id)->with('success', 'Post deleted successfully!');
-    }
+        }
 
     public function getAttachmentUrlAttribute()
     {

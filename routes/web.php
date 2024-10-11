@@ -32,8 +32,8 @@ Route::middleware(['auth'])->group(function () {
     Route::post('blogs/{blog}/posts', [PostController::class, 'store'])->name('blogs.posts.store');
     Route::get('blogs/{blog}/posts/{post}', [PostController::class, 'show'])->name('blogs.posts.show');
     Route::get('blogs/{blog}/posts/{post}/edit', [PostController::class, 'edit'])->name('blogs.posts.edit');
-    Route::put('blogs/{blog}/posts/{post}', [PostController::class, 'update'])->name('blogs.posts.update');
-    Route::delete('blogs/{blog}/posts/{post}', [PostController::class, 'destroy'])->name('blogs.posts.destroy');
+    Route::post('blogs/{blog}/posts/{post}', [PostController::class, 'update'])->name('blogs.posts.update');
+    Route::delete('blogs/{blog}/posts/{post}', [PostController::class, 'destroy'])->name('blogs.posts.destroy');    
 
     //tag
     Route::get('blogs/{blog}/posts/{post}/tags', [TagController::class, 'index'])->name('blogs.posts.tags.index');
@@ -43,4 +43,6 @@ Route::middleware(['auth'])->group(function () {
     Route::get('blogs/{blog}/posts/{post}/tags/{tag}/edit', [TagController::class, 'edit'])->name('blogs.posts.tags.edit');
     Route::put('blogs/{blog}/posts/{post}/tags/{tag}', [TagController::class, 'update'])->name('blogs.posts.tags.update');
     Route::delete('blogs/{blog}/posts/{post}/tags/{tag}', [TagController::class, 'destroy'])->name('blogs.posts.tags.destroy');
+
+    
 });

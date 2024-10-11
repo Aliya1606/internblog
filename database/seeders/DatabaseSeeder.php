@@ -23,11 +23,11 @@ class DatabaseSeeder extends Seeder
             'email' => 'test@example.com',
         ]);
 
-        Blog::factory(10)->create([
+        Blog::factory(5)->create([
             'user_id' => 1,
         ]);
 
-        Post::factory(10)->create([
+        Post::factory(5)->create([
             'user_id' => 1,
             'blog_id' => 1,
         ]);
