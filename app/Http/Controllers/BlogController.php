@@ -12,9 +12,12 @@ class BlogController extends Controller
 {
     public function index(User $user)
     {
-        // $blogs = Blog::all();
-        // $blogs = auth()->user()->blogs()->orderBy('created_at', 'desc')->get();
+        // $blogs = Blog::all(); //allow semua user buat CRUD kat blog/post
+        // $blogs = auth()->user()->blogs()->orderBy('created_at', 'desc')->get(); //allow each user can do CRUD on their own blog/post only
         $blogs = Blog::orderBy('created_at', 'desc')->get();
+
+        //pagination
+        $blogs = Blog::paginate(5);
         return view('blogs.index', compact('blogs'));
     }
 
