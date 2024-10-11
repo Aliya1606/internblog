@@ -101,6 +101,7 @@ class PostController extends Controller
             $post->attachment = $filename;
         }
 
+        //except('attachment') utk This will not overwrite the attachment field
         $post->update($request->except('attachment'));
 
         return redirect()->route('blogs.posts.show', [$blog->id, $post->id])->with('success', 'Post updated successfully.');        
