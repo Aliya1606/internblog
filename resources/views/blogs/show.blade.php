@@ -10,9 +10,10 @@
         </p>
         <p><a>{{ $blog->content }}</a></p>
 
-        <!-- Searching -->
-        <div class="mt-5">
-            <form action="{{ route('blogs.show', $blog->id) }}" method="GET">
+        <div class="mt-5 d-flex justify-content-between align-items-center">
+
+            <!-- Search Form (Left) -->
+            <form action="{{ route('blogs.show', $blog->id) }}" method="GET" class="d-flex">
                 <div class="input-group">
                     <input type="text" class="form-control" name="keyword" value="{{ request()->get('keyword')}}" placeholder="Search posts...">
                     <div class="input-group-append">
@@ -20,12 +21,16 @@
                     </div>
                 </div>
             </form>
+
+            <!-- Buttons (Right) -->
+            <div>
+                @if (auth()->check() && auth()->user()->id === $blog->user_id)
+                    <a href="{{ route('blogs.edit', $blog->id) }}" class="btn btn-primary btn-sm me-2">Edit Blog</a>
+                @endif
+                <a href="{{ route('blogs.posts.create', $blog->id) }}" class="btn btn-primary btn-sm">Create New Post</a>
+            </div>
         </div>
 
-        <a href="{{ route('blogs.posts.create', $blog->id) }}" class="btn btn-primary btn-sm mt-5">Create New Post</a>
-        @if (auth()->check() && auth()->user()->id === $blog->user_id)
-        <a href="{{ route('blogs.edit', $blog->id) }}" class="btn btn-primary btn-sm mt-5" style="float: right;">Edit Blog</a>
-        @endif
         <table class="table mt-3">
                 <thead>
                     <tr>

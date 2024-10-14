@@ -65,10 +65,11 @@ class BlogController extends Controller
 
         if ($request->keyword)
         {
-            $posts = Post::where('title', 'LIKE', '%'.$request->keyword.'%')->paginate(3);
+            $posts = $blog->posts()->where('title', 'LIKE', '%' . $request->keyword . '%')->paginate(3);         
         }
         else
         {
+            // If no keyword, just show the latest posts for the blog
             $posts = $blog->posts()->latest()->paginate(5);
         }
 

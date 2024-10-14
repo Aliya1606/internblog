@@ -3,17 +3,6 @@
 @section('content')
     <div class="container">        
         @include('flash')
-        <!-- Searching -->
-        <!-- <div class="float-right">
-            <form action="" method="">
-                <div class="input-group">
-                    <input type="type" class="form-control" name="keyword" value="{{ request()->get('keyword')}}">
-                    <div class="input-group-append">
-                        <button class="btn btn-primary" type="submit">Search</button>
-                    </div>
-                </div>
-            </form>
-        </div> -->
 
         <h1 class="mt-5">Blogs</h1>
         <a href="{{ route('blogs.create') }}" class="btn btn-primary btn-sm">Create New Blog</a>
