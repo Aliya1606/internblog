@@ -23,7 +23,7 @@ class PostController extends Controller
         return view('blogs.posts.create', compact('blog','tags')); //dlm compact kne ade blog skali
     }
 
-    public function store(Request $request, Blog $blog)
+    public function store(Request $request, Blog $blog, Post $post)
     {
 
         $request->validate([
@@ -39,16 +39,20 @@ class PostController extends Controller
             'blog_id' => $blog->id,
             'title'  => $request->title,
             'content' => $request->content,
-            'attachment' => $request->attachment,
+            'tag_ids' => '',
+            'attachment' => '',
         ]);
 
+        // Handle attachment
         if ($request->hasFile('attachment')) 
         {
             $filename = $post->id. '-'.date('Y-m-d').'.'.$request->attachment->getClientOriginalExtension();
             Storage::disk('public')->put('attachment/'.$filename, File::get($request->attachment));
-
             $post->attachment = $filename;
             $post->save();
+        }
+        else {
+            return redirect()->route('blogs.posts.show', [$blog->id,$post->id])->with('warning', 'No FILE were attached.');
         }
         
         $post->user_id = auth()->user()->id;
@@ -83,7 +87,7 @@ class PostController extends Controller
         //Handle tag
         if ($request->has('tag_ids')) {
             $post->tags()->sync($request->tag_ids);
-        }
+        } 
 
         // Check if a new file is uploaded
         if ($request->hasFile('attachment')) 
@@ -98,7 +102,7 @@ class PostController extends Controller
 
             // Update the post with the new attachment
             $post->attachment = $filename;
-        }
+        } 
 
         //except('attachment') utk This will not overwrite the attachment field
         $post->update($request->except('attachment'));

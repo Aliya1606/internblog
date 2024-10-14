@@ -87,6 +87,7 @@
 
 @section('content')
     <div class="container">
+    @include('flash')
     <a href="{{ route('blogs.posts.show', [$blog, $post]) }}" class="btn btn-primary btn-sm" style="float: right;">Back to Post</a>
         <h1>Edit Post</h1>
             <form action="{{ route('blogs.posts.update', [$blog->id, $post->id]) }}" method="POST" enctype="multipart/form-data">

@@ -55,7 +55,7 @@ class BlogController extends Controller
         //     'content' => $request->content,
         // ])
 
-        return redirect()->route('blogs.index')->with('success', 'Blog post created successfully.');
+        return redirect()->route('blogs.index')->with('success', 'Blog created successfully.');
     }
 
     public function show(Request $request, Blog $blog)

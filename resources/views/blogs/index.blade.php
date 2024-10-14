@@ -1,8 +1,9 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container">
-
+    <div class="container">        
+        @include('flash')
+        
         <!-- Searching -->
         <div class="float-right">
             <form action="" method="">
