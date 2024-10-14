@@ -32,7 +32,11 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav me-auto">
-
+                        <!-- Search Form -->
+                        <form class="d-flex" action="{{ route('blogs.index') }}" method="GET">
+                            <input class="form-control me-2" type="search" name="keyword" placeholder="Search blogs..." aria-label="Search">
+                            <button class="btn btn-outline-primary" type="submit">Search</button>
+                        </form>
                     </ul>
 
                     <!-- Right Side Of Navbar -->

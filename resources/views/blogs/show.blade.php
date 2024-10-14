@@ -40,17 +40,24 @@
                             <td>{{ $post->title }}</a></td>
                             <td>{{ $post->user->name }}</td>
                             <td><small>{{ $post->created_at->format('d M Y, h:i A') }}</small></td>
-                            <td><a href="{{ route('blogs.posts.show', [$blog->id, $post->id]) }}" class="btn btn-primary">Show</a></td>
-                            @if (auth()->check() && auth()->user()->id === $blog->user_id)
-                            <td><a href="{{ route('blogs.posts.edit', [$blog->id, $post->id]) }}" class="btn btn-primary">Edit</a></td>
-                                <td>
-                                    <form action="{{ route('blogs.posts.destroy', [$blog->id, $post->id]) }}" method="POST" style="display:inline;">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-primary" onclick="return confirm('Are you sure you want to delete this post?');">Delete</button>
-                                    </form>
-                                </td>
-                            @endif
+                            <td>
+                                <div class="dropdown">
+                                    <button class="btn btn-link dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false"></button>
+                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                        <li><a class="dropdown-item" href="{{ route('blogs.posts.show', [$blog->id, $post->id]) }}">Show</a></li>
+                                        @if (auth()->check() && auth()->user()->id === $post->user_id)
+                                            <li><a class="dropdown-item" href="{{ route('blogs.posts.edit', [$blog->id, $post->id]) }}">Edit</a></li>
+                                            <li>
+                                                <form action="{{ route('blogs.posts.destroy', [$blog->id, $post->id]) }}" method="POST" style="display:inline;">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="dropdown-item" onclick="return confirm('Are you sure you want to delete this post?');">Delete</button>
+                                                </form>
+                                            </li>
+                                        @endif
+                                    </ul>
+                                </div>
+                            </td>
                         </tr>
                     @endforeach
                 </tbody>
