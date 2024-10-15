@@ -14,10 +14,10 @@
 
             <!-- Search Form (Left) -->
             <form action="{{ route('blogs.show', $blog->id) }}" method="GET" class="d-flex">
-                <div class="input-group">
-                    <input type="text" class="form-control" name="keyword" value="{{ request()->get('keyword')}}" placeholder="Search posts...">
+                <div class="input-group"style="width: auto;">
+                    <input type="text" class="form-control form-control-sm" name="keyword" value="{{ request()->get('keyword')}}" placeholder="Search posts...">
                     <div class="input-group-append">
-                        <button class="btn btn-primary" type="submit">Search</button>
+                        <button class="btn btn-primary btn-sm" type="submit">Search</button>
                     </div>
                 </div>
             </form>
@@ -32,46 +32,46 @@
         </div>
 
         <table class="table mt-3">
-                <thead>
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Created By</th>
+                    <th>Created At</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach($posts as $post)
                     <tr>
-                        <th>Title</th>
-                        <th>Created By</th>
-                        <th>Created At</th>
+                        <td>{{ $post->title }}</a></td>
+                        <td>{{ $post->user->name }}</td>
+                        <td><small>{{ $post->created_at->format('d M Y, h:i A') }}</small></td>
+                        <td>
+                            <div class="dropdown">
+                                <button class="btn btn-link dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false"></button>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                    <li><a class="dropdown-item" href="{{ route('blogs.posts.show', [$blog->id, $post->id]) }}">Show</a></li>
+                                    @if (auth()->check() && auth()->user()->id === $post->user_id)
+                                        <li><a class="dropdown-item" href="{{ route('blogs.posts.edit', [$blog->id, $post->id]) }}">Edit</a></li>
+                                        <li>
+                                            <form action="{{ route('blogs.posts.destroy', [$blog->id, $post->id]) }}" method="POST" style="display:inline;">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="dropdown-item" onclick="return confirm('Are you sure you want to delete this post?');">Delete</button>
+                                            </form>
+                                        </li>
+                                    @endif
+                                </ul>
+                            </div>
+                        </td>
                     </tr>
-                </thead>
-                <tbody>
-                    @foreach($posts as $post)
-                        <tr>
-                            <td>{{ $post->title }}</a></td>
-                            <td>{{ $post->user->name }}</td>
-                            <td><small>{{ $post->created_at->format('d M Y, h:i A') }}</small></td>
-                            <td>
-                                <div class="dropdown">
-                                    <button class="btn btn-link dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false"></button>
-                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                        <li><a class="dropdown-item" href="{{ route('blogs.posts.show', [$blog->id, $post->id]) }}">Show</a></li>
-                                        @if (auth()->check() && auth()->user()->id === $post->user_id)
-                                            <li><a class="dropdown-item" href="{{ route('blogs.posts.edit', [$blog->id, $post->id]) }}">Edit</a></li>
-                                            <li>
-                                                <form action="{{ route('blogs.posts.destroy', [$blog->id, $post->id]) }}" method="POST" style="display:inline;">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="dropdown-item" onclick="return confirm('Are you sure you want to delete this post?');">Delete</button>
-                                                </form>
-                                            </li>
-                                        @endif
-                                    </ul>
-                                </div>
-                            </td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
+                @endforeach
+            </tbody>
+        </table>
 
-            <!-- pagination -->
-            <div class="pagination">
-                {{ $posts->appends(['keyword' => request()->get('keyword')])->links() }}
-            </div>
+        <!-- pagination -->
+        <div class="pagination">
+            {{ $posts->appends(['keyword' => request()->get('keyword')])->links() }}
+        </div>
 
         <a href="{{ route('blogs.index') }}" class="btn btn-primary btn-sm" style="float: right;">Back to Blogs</a>
     </div>

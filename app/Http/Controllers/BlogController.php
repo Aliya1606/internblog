@@ -96,7 +96,7 @@ class BlogController extends Controller
             // Update the blog with the new data
             $blog->update($request->all());
 
-            return redirect()->route('blogs.show', $blog->id)->with('success', 'Blog post updated successfully.');
+            return redirect()->route('blogs.show', $blog->id)->with('success', 'Blog updated successfully.');
         }
     }
 

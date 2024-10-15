@@ -23,6 +23,8 @@
         @endif
 
         <a href="{{ route('blogs.show', [$blog->id, $post->id]) }}" class="btn btn-primary btn-sm" style="float: right;">Back to Post</a>
+        @if (auth()->check() && auth()->user()->id === $post->user_id)
         <a href="{{ route('blogs.posts.edit', [$blog->id, $post->id]) }}" class="btn btn-primary btn-sm me-2" style="float: right;">Edit</a>
+        @endif
     </div>
 @endsection

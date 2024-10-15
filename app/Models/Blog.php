@@ -10,9 +10,15 @@ class Blog extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $fillable = ['user_id', 'title', 'content'];
+    protected $fillable = [
+        'user_id', 
+        'title', 
+        'content'
+    ];
     
-    protected $dates = ['deleted_at'];
+    protected $dates = [
+        'deleted_at'
+    ];
 
     public function user()
     {
