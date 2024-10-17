@@ -1,78 +1,63 @@
 @extends('blogs.layouts.main')
 
 @section('content')
-    <div class="container">
+    <class="container">
         @include('flash')
-        <h1><strong>{{ $blog->title }}</strong></h1>
-        <p>
-            <a>Created By: {{ $blog->user->name }}</a>
-            <a style="float: right;"><small>{{ $blog->created_at->format('d M Y, h:i A') }}</small></a>
-        </p>
-        <p><a>{{ $blog->content }}</a></p>
 
-        <div class="mt-5 d-flex justify-content-between align-items-center">
+        <!-- Blog Title and Meta -->
+        <h1 class="my-4"><strong>{{ $blog->title }}</strong></h1>
+        <div class="text-muted fst-italic mb-2">
+            <small>Posted on {{ $blog->created_at->format('d M Y, h:i A') }}, by {{ $blog->user->name }}</small>
+        </div>
+        
+        <a href="{{ route('blogs.posts.create', $blog->id) }}" class="btn btn-primary btn-sm" style="float: right;">Create New Post</a>
+        
+        <p>{{ $blog->content }}</p>
 
-            <!-- Search Form (Left) -->
-            <form action="{{ route('blogs.show', $blog->id) }}" method="GET" class="d-flex">
-                <div class="input-group"style="width: auto;">
-                    <input type="text" class="form-control form-control-sm" name="keyword" value="{{ request()->get('keyword')}}" placeholder="Search posts...">
-                    <div class="input-group-append">
-                        <button class="btn btn-primary btn-sm" type="submit">Search</button>
+        <div class="row">
+            <!-- Blog Entries Column -->
+            <div class="col-md-8">
+                <!-- Featured Post -->
+                @if($posts->count() > 0)
+                    <div class="card mb-4">
+                        <a href="{{ route('blogs.posts.show', [$blog->id, $posts[0]->id]) }}">
+                            <img class="card-img-top" src="{{ asset('storage/attachment/' . $posts[0]->attachment) }}" alt="{{ $posts[0]->title }}" style="width: 100%; height: 350px; object-fit: cover;" />
+                        </a>
+                        <div class="card-body">
+                            <div class="text-muted fst-italic mb-2">
+                                <small>Posted on {{ $posts[0]->created_at->format('d M Y, h:i A') }}, by {{ $posts[0]->user->name }}</small>
+                            </div>                           
+                            <h2 class="card-title">{{ $posts[0]->title }}</h2>
+                            <p class="card-text">{{ \Illuminate\Support\Str::limit($posts[0]->content, 10) }}</p>
+                            <a class="btn btn-primary btn-sm" href="{{ route('blogs.posts.show', [$blog->id, $posts[0]->id]) }}">Read more →</a>
+                        </div>
                     </div>
-                </div>
-            </form>
-
-            <!-- Buttons (Right) -->
-            <div>
-                @if (auth()->check() && auth()->user()->id === $blog->user_id)
-                    <a href="{{ route('blogs.edit', $blog->id) }}" class="btn btn-primary btn-sm me-2">Edit Blog</a>
                 @endif
-                <a href="{{ route('blogs.posts.create', $blog->id) }}" class="btn btn-primary btn-sm">Create New Post</a>
-            </div>
-        </div>
+            
 
-        <table class="table mt-3">
-            <thead>
-                <tr>
-                    <th>Title</th>
-                    <th>Created By</th>
-                    <th>Created At</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach($posts as $post)
-                    <tr>
-                        <td>{{ $post->title }}</a></td>
-                        <td>{{ $post->user->name }}</td>
-                        <td><small>{{ $post->created_at->format('d M Y, h:i A') }}</small></td>
-                        <td>
-                            <div class="dropdown">
-                                <button class="btn btn-link dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false"></button>
-                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                    <li><a class="dropdown-item" href="{{ route('blogs.posts.show', [$blog->id, $post->id]) }}">Show</a></li>
-                                    @if (auth()->check() && auth()->user()->id === $post->user_id)
-                                        <li><a class="dropdown-item" href="{{ route('blogs.posts.edit', [$blog->id, $post->id]) }}">Edit</a></li>
-                                        <li>
-                                            <form action="{{ route('blogs.posts.destroy', [$blog->id, $post->id]) }}" method="POST" style="display:inline;">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="dropdown-item" onclick="return confirm('Are you sure you want to delete this post?');">Delete</button>
-                                            </form>
-                                        </li>
-                                    @endif
-                                </ul>
+                <!-- Nested row for non-featured blog posts-->
+                <div class="row">
+                    @foreach($posts->skip(1) as $post)
+                        <div class="col-lg-6 col-md-6 mb-4">
+                            <div class="card">
+                                <a href="{{ route('blogs.posts.show', [$blog->id, $post->id]) }}">
+                                    <img class="card-img-top" src="{{ asset('storage/attachment/' . $post->attachment) }}" alt="{{ $post->title }}" style="width: 100%; height: 350px; object-fit: cover;"/>
+                                </a>
+                                <div class="card-body">
+                                    <div class="text-muted fst-italic mb-2">
+                                        <small>Posted on {{ $post->created_at->format('d M Y, h:i A') }}, by {{ $post->user->name }}</small>
+                                    </div>                           
+                                    <h4 class="card-title">{{ $post->title }}</h4>
+                                    <p class="card-text">{{ \Illuminate\Support\Str::limit($post->content, 10) }}</p>
+                                    <a class="btn btn-primary btn-sm" href="{{ route('blogs.posts.show', [$blog->id, $post->id]) }}">Read more →</a>
+                                </div>
                             </div>
-                        </td>
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>
+                        </div>
+                    @endforeach
+                </div>
 
-        <!-- pagination -->
-        <div class="pagination">
-            {{ $posts->appends(['keyword' => request()->get('keyword')])->links() }}
+                <a href="{{ route('blogs.index') }}" class="btn btn-primary btn-sm" style="float: right;">Back to Blogs</a>
+
         </div>
-
-        <a href="{{ route('blogs.index') }}" class="btn btn-primary btn-sm" style="float: right;">Back to Blogs</a>
     </div>
 @endsection

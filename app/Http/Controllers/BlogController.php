@@ -27,7 +27,7 @@ class BlogController extends Controller
         }
         else
         {
-            $blogs = Blog::orderBy('created_at', 'desc')->paginate(5);
+            $blogs = Blog::orderBy('created_at', 'desc')->paginate(6);
         } 
 
         return view('blogs.index', compact('blogs'));
